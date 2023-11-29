@@ -1,0 +1,74 @@
+import random,sys
+
+JAPANESE_NUMBER={1:'ICHI',2:'NI',3:'SAN',
+                 4:'SHI',5:'GO',6:'ROKU',}
+
+print('Cho-Han game.....')
+print()
+
+purse=5000
+while True:
+
+    print(f'You have {purse}Rs. How much would you like to bet')
+
+    while True:
+        pot=input('>  ')
+        if pot.startswith('q'):
+            print('Thanks for playing')
+            sys.exit()
+        elif not pot.isdecimal():
+            print("Please enter a number.")
+        elif int(pot)>purse:
+            print("You do not have enough money to make that bet!")
+        else:
+            pot=int(pot)
+            break
+
+    #Roll dice...
+
+    dice1=random.randint(1,6)
+    dice2=random.randint(1,6)
+
+    print(''' The Dealer swirls the cup
+            Dealer slams the cup and ask you to bet!!!''')
+
+    print('         CHO(even) or HAN(odd)        ')
+
+    while True:
+        bet=input('>  ').upper()
+        if bet != 'CHO' and bet != 'HAN':
+            print('Please enter CHO or HAN..')
+            continue
+        else:
+            break
+
+    #reavel...
+
+    print("The Dealer lifts the cup")
+    print(' ', JAPANESE_NUMBER[dice1], '-', JAPANESE_NUMBER[dice2])
+    print('    ', dice1, '-', dice2)
+
+
+    rollIsEven=(dice1+dice2)%2==0
+    if rollIsEven:
+        correctBet='CHO'
+    else:
+        correctBet='HAN'
+
+    playerWon= bet==correctBet
+
+    if playerWon:
+        print(f"You have won {pot}Rs !!!")
+        mon=pot//10
+        purse = purse + pot - mon
+        print(f'House collects a {mon} as a fee')
+
+    else:
+        purse=purse-pot
+        print(f"You have lost {pot}Rs!!!")
+        print("You lost this game...")
+
+    if purse==0:
+        print("You have lost al the money!!!")
+        print("Thanks for playing...")
+        sys.exit()
